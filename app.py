@@ -1,3 +1,4 @@
+st.set_option("client.showErrorDetails", True)
 import streamlit as st
 from datetime import date
 
