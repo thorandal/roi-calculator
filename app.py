@@ -18,6 +18,20 @@ dager = (i_dag - startdato).days
 if dager < 0:
     st.error("Startdato kan ikke være i fremtiden. Velg en dato før i dag.")
     st.stop()
+
+# En “måned” for snittberegning: 30,437 dager (365,25/12)
+mnd = dager / 30.437 if dager > 0 else 0
+
+colA, colB, colC = st.columns(3)
+with colA:
+    st.metric("Dager siden start", f"{dager}")
+with colB:
+    st.metric("Ca. måneder", f"{mnd:.1f}")
+with colC:
+    st.metric("Startdato", startdato.strftime("%d.%m.%Y"))
+
+st.divider()
+
 # ---------- INPUT ----------
 st.header("1️⃣ Legg inn tall (USD)")
 
@@ -70,6 +84,7 @@ production_roi = roi_percent(production_net, total_spent)
 contracted_value = locked + remaining
 contracted_net = contracted_value - total_spent
 contracted_roi = roi_percent(contracted_net, total_spent)
+
 # ---------- OUTPUT ----------
 st.divider()
 st.header("2️⃣ Resultater")
@@ -99,15 +114,3 @@ st.caption(
     "⚠️ Kontrakts-ROI er basert på kontraktsfestet verdi (Locked Auto Renew + Remaining Earning). "
     "Dette er ikke kontantverdi per i dag."
 )
-# En “måned” for snittberegning: 30,437 dager (365,25/12)
-mnd = dager / 30.437 if dager > 0 else 0
-
-colA, colB, colC = st.columns(3)
-with colA:
-    st.metric("Dager siden start", f"{dager}")
-with colB:
-    st.metric("Ca. måneder", f"{mnd:.1f}")
-with colC:
-    st.metric("Startdato", startdato.strftime("%d.%m.%Y"))
-
-st.divider()
