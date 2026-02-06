@@ -44,6 +44,62 @@ total_earned = st.number_input(
 )
 
 st.subheader("Realisert verdi (cash)")
+# ---------- CALCULATIONS ----------
+def roi_percent(net: float, spent: float):
+    if spent == 0:
+        return None
+    return (net / spent) * 100
+
+def per_day(amount: float):
+    if dager == 0:
+        return None
+    return amount / dager
+
+def per_month(amount: float):
+    if mnd == 0:
+        return None
+    return amount / mnd
+
+realized_value = claimed + available + claimable
+realized_net = realized_value - total_spent
+realized_roi = roi_percent(realized_net, total_spent)
+
+production_net = total_earned - total_spent
+production_roi = roi_percent(production_net, total_spent)
+
+contracted_value = locked + remaining
+contracted_net = contracted_value - total_spent
+contracted_roi = roi_percent(contracted_net, total_spent)
+
+# ---------- OUTPUT ----------
+st.divider()
+st.header("2️⃣ Resultater")
+
+def show_block(title, value_basis, net, roi):
+    st.subheader(title)
+    st.write(f"Verdi-grunnlag: **${value_basis:,.2f}**")
+    st.write(f"Netto (verdi − spent): **${net:,.2f}**")
+    st.write(f"ROI: **{roi:.2f}%**" if roi is not None else "ROI: **N/A**")
+
+    d = per_day(net)
+    mo = per_month(net)
+
+    colx, coly = st.columns(2)
+    with colx:
+        st.write("**Netto per dag:**")
+        st.write(f"${d:,.2f}" if d is not None else "N/A")
+    with coly:
+        st.write("**Netto per måned (ca.):**")
+        st.write(f"${mo:,.2f}" if mo is not None else "N/A")
+
+show_block("✅ Realisert ROI (Cash)", realized_value, realized_net, realized_roi)
+show_block("📈 Produksjons-ROI (Historical)", total_earned, production_net, production_roi)
+show_block("📜 Kontrakts-ROI (SMC – tidsvariabel)", contracted_value, contracted_net, contracted_roi)
+
+st.caption(
+    "⚠️ Kontrakts-ROI er basert på kontraktsfestet verdi (Locked Auto Renew + Remaining Earning). "
+    "Dette er ikke kontantverdi per i dag."
+)
 col1, col2, col3 = st.columns(3)
 with col1:
     claimed = st.number_input("Total Claimed", min_value=0.0, value=1402.71, format="%.2f")
