@@ -21,7 +21,10 @@ hr {margin: 1.2rem 0;}
 """, unsafe_allow_html=True)
 
 st.markdown("## ROI-kalkulator")
-st.markdown('<div class="small">Realisert ROI · Produksjons-ROI · Kontrakts-ROI (SMC)</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="small">Realisert ROI · Produksjons-ROI · Kontrakts-ROI (SMC)</div>',
+    unsafe_allow_html=True
+)
 st.divider()
 
 # ---------- DATOER ----------
@@ -36,6 +39,10 @@ dager = (i_dag - startdato).days
 if dager < 0:
     st.error("Startdato kan ikke være i fremtiden. Velg en dato før i dag.")
     st.stop()
+
+# En “måned” for snittberegning: 30,437 dager (365,25/12)
+mnd = dager / 30.437 if dager > 0 else 0
+
 # ---------- INPUT ----------
 st.subheader("1️⃣ Tall (USD)")
 
@@ -99,23 +106,33 @@ contracted_net = contracted_value - total_spent
 contracted_roi = roi_percent(contracted_net, total_spent)
 
 st.divider()
+
 # ---------- OUTPUT ----------
 st.subheader("2️⃣ Resultater")
 
 # Hero row (top KPIs)
 k1, k2, k3 = st.columns(3)
 with k1:
-    st.markdown('<div class="card"><div class="small">Realisert ROI</div>'
-                f'<div class="big">{(realized_roi if realized_roi is not None else 0):.1f}%</div>'
-                f'<div class="small">Netto: ${realized_net:,.2f}</div></div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="card"><div class="small">Realisert ROI</div>'
+        f'<div class="big">{(realized_roi if realized_roi is not None else 0):.1f}%</div>'
+        f'<div class="small">Netto: ${realized_net:,.2f}</div></div>',
+        unsafe_allow_html=True
+    )
 with k2:
-    st.markdown('<div class="card"><div class="small">Produksjons-ROI</div>'
-                f'<div class="big">{(production_roi if production_roi is not None else 0):.1f}%</div>'
-                f'<div class="small">Netto: ${production_net:,.2f}</div></div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="card"><div class="small">Produksjons-ROI</div>'
+        f'<div class="big">{(production_roi if production_roi is not None else 0):.1f}%</div>'
+        f'<div class="small">Netto: ${production_net:,.2f}</div></div>',
+        unsafe_allow_html=True
+    )
 with k3:
-    st.markdown('<div class="card"><div class="small">Kontrakts-ROI</div>'
-                f'<div class="big">{(contracted_roi if contracted_roi is not None else 0):.1f}%</div>'
-                f'<div class="small">Netto: ${contracted_net:,.2f}</div></div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="card"><div class="small">Kontrakts-ROI</div>'
+        f'<div class="big">{(contracted_roi if contracted_roi is not None else 0):.1f}%</div>'
+        f'<div class="small">Netto: ${contracted_net:,.2f}</div></div>',
+        unsafe_allow_html=True
+    )
 
 st.markdown("---")
 
@@ -150,9 +167,6 @@ st.caption(
     "⚠️ Kontrakts-ROI er basert på kontraktsfestet verdi (Locked Auto Renew + Remaining Earning) "
     "og er ikke kontantverdi per i dag."
 )
-
-# En “måned” for snittberegning: 30,437 dager (365,25/12)
-mnd = dager / 30.437 if dager > 0 else 0
 
 colA, colB, colC = st.columns(3)
 with colA:
