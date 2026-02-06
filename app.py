@@ -44,6 +44,31 @@ total_earned = st.number_input(
 )
 
 st.subheader("Realisert verdi (cash)")
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    claimed = st.number_input(
+        "Total Claimed",
+        min_value=0.0,
+        value=1402.71,
+        format="%.2f"
+    )
+
+with col2:
+    available = st.number_input(
+        "Available",
+        min_value=0.0,
+        value=101.59,
+        format="%.2f"
+    )
+
+with col3:
+    claimable = st.number_input(
+        "Claimable",
+        min_value=0.0,
+        value=7.15,
+        format="%.2f"
+    )
 # ---------- CALCULATIONS ----------
 def roi_percent(net: float, spent: float):
     if spent == 0:
