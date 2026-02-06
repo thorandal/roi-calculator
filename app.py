@@ -30,3 +30,28 @@ with colC:
     st.metric("Startdato", startdato.strftime("%d.%m.%Y"))
 
 st.divider()
+# ---------- INPUT ----------
+st.header("1️⃣ Legg inn tall (USD)")
+
+total_spent = st.number_input(
+    "Total Spent (Fiat & Crypto) – investert kapital",
+    min_value=0.0, value=2695.58, format="%.2f"
+)
+
+total_earned = st.number_input(
+    "Total Earned – historisk produsert verdi",
+    min_value=0.0, value=9598.85, format="%.2f"
+)
+
+st.subheader("Realisert verdi (cash)")
+col1, col2, col3 = st.columns(3)
+with col1:
+    claimed = st.number_input("Total Claimed", min_value=0.0, value=1402.71, format="%.2f")
+with col2:
+    available = st.number_input("Available", min_value=0.0, value=101.59, format="%.2f")
+with col3:
+    claimable = st.number_input("Claimable", min_value=0.0, value=7.15, format="%.2f")
+
+st.subheader("Kontraktsfestet (SMC)")
+locked = st.number_input("Locked Auto Renew", min_value=0.0, value=94.43, format="%.2f")
+remaining = st.number_input("Remaining Earning", min_value=0.0, value=7162.45, format="%.2f")
